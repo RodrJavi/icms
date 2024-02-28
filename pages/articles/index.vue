@@ -5,8 +5,8 @@ const client = useSupabaseClient<Database>();
 
 const { data: articles } = await useAsyncData("articles", async () => {
   const { data } = await client
-    .from("Articles")
-    .select("id, title, created_at");
+    .from("articles")
+    .select("id, title, created_by");
 
   return data;
 });

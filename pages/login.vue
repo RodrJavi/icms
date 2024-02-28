@@ -9,7 +9,9 @@ const login = async () => {
     password: password.value,
   });
 
-  navigateTo("/");
+  if (!error) {
+    navigateTo("/");
+  }
 };
 </script>
 

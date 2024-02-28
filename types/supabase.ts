@@ -9,7 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      Articles: {
+      articles: {
         Row: {
           body: string;
           created_at: string;
@@ -33,9 +33,44 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "public_Articles_created_by_fkey";
+            foreignKeyName: "public_articles_created_by_fkey";
             columns: ["created_by"];
             isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      profiles: {
+        Row: {
+          avatar_url: string | null;
+          bio: string | null;
+          full_name: string | null;
+          id: string;
+          updated_at: string | null;
+          username: string | null;
+        };
+        Insert: {
+          avatar_url?: string | null;
+          bio?: string | null;
+          full_name?: string | null;
+          id: string;
+          updated_at?: string | null;
+          username?: string | null;
+        };
+        Update: {
+          avatar_url?: string | null;
+          bio?: string | null;
+          full_name?: string | null;
+          id?: string;
+          updated_at?: string | null;
+          username?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
             referencedRelation: "users";
             referencedColumns: ["id"];
           }
