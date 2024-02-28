@@ -8,13 +8,7 @@ export default defineNuxtConfig({
       plugins: [tailwindTypography],
     },
   },
-  modules: [
-    // https://supabase.nuxtjs.org/
-    "@nuxtjs/supabase",
-
-    // https://tailwindcss.nuxtjs.org/
-    "@nuxtjs/tailwindcss",
-
-    "nuxt-monaco-editor",
-  ],
+  modules: [// https://supabase.nuxtjs.org/
+  "@nuxtjs/supabase", // https://tailwindcss.nuxtjs.org/
+  "@nuxtjs/tailwindcss", "nuxt-monaco-editor", "@vueuse/nuxt"],
 });

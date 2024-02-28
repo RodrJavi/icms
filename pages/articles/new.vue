@@ -5,14 +5,13 @@ import { marked } from "marked";
 const supabase = useSupabaseClient<Database>();
 
 const title = ref("");
-const body = ref("");
 const editorString = ref("# hello");
 const editorStringHtml = computed(() => marked(editorString.value));
 
 async function submit() {
   const { error } = await supabase
     .from("articles")
-    .insert({ title: title.value, body: body.value });
+    .insert({ title: title.value, body: editorString.value });
 
   if (error) {
     console.error(error);
