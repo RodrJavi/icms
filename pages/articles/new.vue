@@ -4,14 +4,17 @@ import { marked } from "marked";
 
 const supabase = useSupabaseClient<Database>();
 
-const title = ref("");
+const head = ref("");
+const subHead = ref("");
 const editorString = ref("# hello");
 const editorStringHtml = computed(() => marked(editorString.value));
 
 async function submit() {
-  const { error } = await supabase
-    .from("articles")
-    .insert({ title: title.value, body: editorString.value });
+  const { error } = await supabase.from("articles").insert({
+    head: head.value,
+    subhead: subHead.value,
+    body: editorString.value,
+  });
 
   if (error) {
     console.error(error);
@@ -33,7 +36,8 @@ async function submit() {
         @submit.prevent="submit()"
         class="border-r px-4 flex flex-col"
         id="create-article">
-        <JInput label="Title" type="text" v-model="title" />
+        <JInput label="Head" type="text" v-model="head" />
+        <JInput label="Subhead" type="text" v-model="subHead" />
         <!-- <JTextArea label="Body" v-model="body" /> -->
         <MonacoEditor v-model="editorString" lang="markdown" class="flex-1" />
         <input type="file" name="" id="" />

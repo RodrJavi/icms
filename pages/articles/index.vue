@@ -4,9 +4,7 @@ import type { Database } from "@/types/supabase";
 const client = useSupabaseClient<Database>();
 
 const { data: articles } = await useAsyncData("articles", async () => {
-  const { data } = await client
-    .from("articles")
-    .select("id, title, created_by");
+  const { data } = await client.from("articles").select("id, head, created_by");
 
   return data;
 });
@@ -18,7 +16,7 @@ const { data: articles } = await useAsyncData("articles", async () => {
   <ul>
     <li v-for="article in articles" :key="article.id">
       <NuxtLink class="text-green-500" :to="`/articles/${article.id}`">
-        {{ article.title }}
+        {{ article.head }}
       </NuxtLink>
     </li>
   </ul>

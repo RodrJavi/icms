@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Database } from "@/types/supabase";
+import { marked } from "marked";
 
 const route = useRoute();
 const supabase = useSupabaseClient<Database>();
@@ -8,7 +9,7 @@ const supabase = useSupabaseClient<Database>();
 const { data } = await useAsyncData(route.params.id.toString(), async () => {
   const { data, error } = await supabase
     .from("articles")
-    .select("created_at, title, body, profiles(full_name)")
+    .select("created_at, head, subhead, body, profiles(full_name)")
     .match({
       id: route.params.id,
     })
@@ -24,20 +25,21 @@ const preDate = computed(() => {
   return data.value.created_at;
 });
 const publishDate = useTimeAgo(preDate);
+
+const formattedBody = computed(() => marked(data.value.body));
 </script>
 
 <template>
   <article>
-    <h1>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Non culpa ex at
-      reiciendis. Totam nobis molestias assumenda dolor tempore alias.
+    <h1 class="font-bold text-5xl">
+      {{ data?.head }}
     </h1>
-    <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum, excepturi?
+    <p class="font-semibold">
+      {{ data?.subhead }}
     </p>
     <span>By {{ data?.profiles?.full_name }}</span>
-    <span>Published {{ data?.created_at }}</span>
-    <p>{{ data }}</p>
-    {{ publishDate }}
+    <span>Published {{ publishDate }}</span>
+    <div class="p-2 prose" v-html="formattedBody"></div>
+    <!-- <p>{{ data }}</p> -->
   </article>
 </template>
