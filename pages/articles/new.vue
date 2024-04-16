@@ -8,6 +8,13 @@ const head = ref("");
 const subHead = ref("");
 const editorString = ref("# hello");
 const editorStringHtml = computed(() => marked(editorString.value));
+const fileName = ref("test");
+
+function changeFileName(e) {
+  let path = e;
+  let array = path.split("\\");
+  fileName.value = array[array.length - 1];
+}
 
 async function submit() {
   const { error } = await supabase.from("articles").insert({
@@ -15,6 +22,14 @@ async function submit() {
     subhead: subHead.value,
     body: editorString.value,
   });
+
+  const photo = event.target.files[0];
+  const { data } = await supabase.storage
+    .from("images")
+    .upload("cars/avatar1.png", photo, {
+      cacheControl: "3600",
+      upsert: false,
+    });
 
   if (error) {
     console.error(error);
@@ -40,7 +55,16 @@ async function submit() {
         <JInput label="Subhead" type="text" v-model="subHead" />
         <!-- <JTextArea label="Body" v-model="body" /> -->
         <MonacoEditor v-model="editorString" lang="markdown" class="flex-1" />
-        <input type="file" name="" id="" />
+        <input
+          type="file"
+          name="articleCover"
+          id="coverPhoto"
+          @change="
+            (e) => {
+              changeFileName(e.target.value);
+            }
+          " />
+        {{ fileName }}
       </form>
 
       <div class="p-2 prose" v-html="editorStringHtml"></div>
